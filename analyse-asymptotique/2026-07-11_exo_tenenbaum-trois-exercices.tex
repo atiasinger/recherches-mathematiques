@@ -1,0 +1,483 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\geometry{margin=2.6cm}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage[expansion=false]{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black}
+
+\definecolor{theoremblue}{RGB}{32,92,155}
+\definecolor{lemmaorange}{RGB}{208,112,25}
+\definecolor{proofgreen}{RGB}{35,125,75}
+\definecolor{remarkviolet}{RGB}{112,65,145}
+\definecolor{keyred}{RGB}{175,42,42}
+\definecolor{softgray}{RGB}{246,247,249}
+
+\newmdenv[backgroundcolor=blue!3,linecolor=theoremblue,linewidth=1.2pt,
+  roundcorner=4pt,skipabove=10pt,skipbelow=10pt]{theorembox}
+\newmdenv[backgroundcolor=orange!4,linecolor=lemmaorange,linewidth=1.2pt,
+  roundcorner=4pt,skipabove=10pt,skipbelow=10pt]{lemmabox}
+\newmdenv[backgroundcolor=green!3,linecolor=proofgreen,linewidth=1.2pt,
+  roundcorner=4pt,skipabove=10pt,skipbelow=10pt]{proofbox}
+\newmdenv[backgroundcolor=violet!3,linecolor=remarkviolet,linewidth=1.2pt,
+  roundcorner=4pt,skipabove=10pt,skipbelow=10pt]{remarkbox}
+\newmdenv[backgroundcolor=red!3,linecolor=keyred,linewidth=1.4pt,
+  roundcorner=4pt,skipabove=10pt,skipbelow=10pt]{resultbox}
+\newmdenv[backgroundcolor=softgray,linecolor=black!45,linewidth=1pt,
+  roundcorner=4pt,skipabove=10pt,skipbelow=10pt]{definitionbox}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Bper}[1]{\widetilde B_{#1}}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\pgcd}{pgcd}
+
+\title{Trois exercices de G\'erald Tenenbaum\\
+\large Euler--Maclaurin, arithm\'etique fondamentale et s\'eries de Dirichlet}
+\author{R\'esolution d\'etaill\'ee -- mode chercheur senior}
+\date{11 juillet 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\begin{remarkbox}
+\textbf{Statut \'epist\'emique.}
+Toutes les assertions d\'emontr\'ees ci-dessous sont inconditionnelles. Aucune
+conjecture, notamment aucune forme de l'hypoth\`ese de Riemann, n'est utilis\'ee.
+Les passages \`a la limite et les int\'egrations par parties impropres sont
+justifi\'es explicitement.
+\end{remarkbox}
+
+\part{Exercice I.0.4 : stabilisation d'Euler--Maclaurin}
+
+\section{\'Enonc\'e reformul\'e}
+
+\begin{theorembox}
+\textbf{Probl\`eme.}
+Soient $k\in\N$ et $f\in C^{2k+1}([1,+\infty[,\R)$, avec
+$f^{(2k+1)}\in L^1([1,+\infty[)$. Montrer qu'il existe une constante
+$C_k(f)$ explicite telle que, pour tout $n\geq1$,
+\begin{align*}
+\sum_{1\leq m\leq n}f(m)
+={}&\int_1^n f(x)\,dx+\frac12f(n)
++\sum_{1\leq j\leq k}\frac{B_{2j}}{(2j)!}f^{(2j-1)}(n)\\
+&+C_k(f)+R_{k,n}(f),
+\end{align*}
+o\`u $R_{k,n}(f)\to0$ lorsque $n\to\infty$. Montrer ensuite que si
+$f^{(2j+1)}\in L^1([1,+\infty[)$ pour tout $j\geq m$, alors $C_k(f)$ est
+ind\'ependant de $k$ pour $k\geq m$.
+\end{theorembox}
+
+\section{Conventions et pr\'erequis}
+
+\begin{definitionbox}
+Les nombres de Bernoulli $B_r$ et les polyn\^omes de Bernoulli $B_r(x)$ sont
+d\'efinis par
+\[
+ \frac{ze^{xz}}{e^z-1}=\sum_{r\geq0}B_r(x)\frac{z^r}{r!},
+ \qquad B_r:=B_r(0).
+\]
+On note $\Bper r(x):=B_r(\{x\})$ la fonction p\'eriodique de Bernoulli. Pour
+$r\geq2$, elle est continue et born\'ee; sur chaque intervalle ne contenant pas
+d'entier, $(\Bper r)'=r\Bper{r-1}$.
+\end{definitionbox}
+
+Nous utiliserons la formule d'Euler--Maclaurin sous la forme suivante, valable
+pour $f\in C^{2k+1}([1,n])$ :
+\begin{align}
+\sum_{m=1}^{n}f(m)
+={}&\int_1^n f(x)\,dx+\frac{f(1)+f(n)}2
++\sum_{j=1}^{k}\frac{B_{2j}}{(2j)!}
+ \bigl(f^{(2j-1)}(n)-f^{(2j-1)}(1)\bigr) \notag\\
+&+\frac1{(2k+1)!}\int_1^n \Bper{2k+1}(x)f^{(2k+1)}(x)\,dx.
+\tag{EM}\label{EM}
+\end{align}
+Lorsque $k=0$, la somme index\'ee par $j$ est vide. Le signe du dernier terme
+est positif avec les conventions pr\'ec\'edentes; il r\'esulte d'une int\'egration
+par parties par morceaux de la fonction $\Bper1(x)=\{x\}-1/2$.
+
+\section{Lemmes interm\'ediaires}
+
+\begin{lemmabox}
+\textbf{Lemme 1 (queue d'une int\'egrale $L^1$).}
+Si $g\in L^1([1,+\infty[)$ et $h$ est mesurable et born\'ee, alors
+\[
+ \int_n^{\infty}h(x)g(x)\,dx\longrightarrow0.
+\]
+\end{lemmabox}
+\begin{proofbox}
+Posons $M:=\|h\|_\infty$. Pour tout $n\geq1$,
+\[
+ \left|\int_n^\infty h(x)g(x)\,dx\right|
+ \leq M\int_n^\infty |g(x)|\,dx.
+\]
+Par d\'efinition de l'int\'egrabilit\'e sur $[1,+\infty[$, le dernier membre
+tend vers $0$.
+\end{proofbox}
+
+\begin{lemmabox}
+\textbf{Lemme 2 (annulation \`a l'infini).}
+Soit $g\in C^2([1,+\infty[)$ telle que $g,g''\in L^1([1,+\infty[)$. Alors
+\[
+ g(x)\longrightarrow0\quad\hbox{et}\quad g'(x)\longrightarrow0.
+\]
+\end{lemmabox}
+\begin{proofbox}
+Pour $x\geq1$ et $h>0$, deux int\'egrations successives donnent
+\[
+ g(x+h)=g(x)+hg'(x)+\int_x^{x+h}(x+h-t)g''(t)\,dt.
+\]
+En int\'egrant cette identit\'e par rapport \`a $h$ sur $[0,1]$, on obtient
+\[
+ \int_x^{x+1}g(u)\,du
+ =g(x)+\frac12g'(x)
+ +\int_0^1\int_x^{x+h}(x+h-t)g''(t)\,dt\,dh. \tag{1}
+\]
+En rempla\c{c}ant $h$ par $-h$ dans la formule de Taylor avec reste int\'egral,
+puis en int\'egrant sur $[0,1]$ (pour $x\geq2$), on trouve de m\^eme
+\[
+ \int_{x-1}^{x}g(u)\,du
+ =g(x)-\frac12g'(x)+E_-(x), \tag{2}
+\]
+o\`u $|E_-(x)|\leq\frac12\int_{x-1}^{x}|g''(t)|dt$. Le reste $E_+(x)$
+de (1) satisfait la majoration analogue sur $[x,x+1]$.
+Les int\'egrales de $g$ sur $[x-1,x+1]$ tendent vers $0$, ainsi que $E_\pm(x)$,
+car $g,g''\in L^1$. En additionnant puis en soustrayant (1) et (2), on obtient
+respectivement $g(x)\to0$ et $g'(x)\to0$.
+\end{proofbox}
+
+\section{Preuve principale}
+
+\begin{theorembox}
+\textbf{Proposition 1.}
+La constante et le reste recherch\'es peuvent \^etre choisis comme suit :
+\begin{align}
+C_k(f):={}&\frac12f(1)-\sum_{j=1}^{k}\frac{B_{2j}}{(2j)!}
+ f^{(2j-1)}(1)
++\frac1{(2k+1)!}\int_1^\infty
+ \Bper{2k+1}(x)f^{(2k+1)}(x)\,dx, \label{Ck}\tag{3}\\
+R_{k,n}(f):={}&-\frac1{(2k+1)!}\int_n^\infty
+ \Bper{2k+1}(x)f^{(2k+1)}(x)\,dx. \label{Rk}\tag{4}
+\end{align}
+\end{theorembox}
+\begin{proofbox}
+La fonction $\Bper{2k+1}$ est born\'ee. L'hypoth\`ese
+$f^{(2k+1)}\in L^1$ assure donc la convergence absolue de l'int\'egrale
+impropre figurant dans \eqref{Ck}. Dans \eqref{EM}, on d\'ecompose
+\[
+ \int_1^n \Bper{2k+1}f^{(2k+1)}
+ =\int_1^\infty \Bper{2k+1}f^{(2k+1)}
+ -\int_n^\infty \Bper{2k+1}f^{(2k+1)}.
+\]
+Le regroupement des termes d\'ependant de la borne inf\'erieure $1$ fournit
+exactement \eqref{Ck}, tandis que la seconde int\'egrale donne \eqref{Rk}.
+Le Lemme 1, appliqu\'e avec $g=f^{(2k+1)}$ et
+$h=\Bper{2k+1}$, montre enfin que $R_{k,n}(f)\to0$.
+\end{proofbox}
+
+\begin{theorembox}
+\textbf{Proposition 2 (stabilisation).}
+Si $f^{(2j+1)}\in L^1([1,+\infty[)$ pour tout $j\geq m$, alors
+\[
+ C_{k+1}(f)=C_k(f)\qquad(k\geq m),
+\]
+et par cons\'equent $C_k(f)=C_m(f)$ pour tout $k\geq m$.
+\end{theorembox}
+\begin{proofbox}
+Fixons $k\geq m$ et posons $g=f^{(2k+1)}$. Les hypoth\`eses donnent
+$g=f^{(2k+1)}\in L^1$ et $g''=f^{(2k+3)}\in L^1$. Le Lemme 2 implique
+\[
+ f^{(2k+1)}(x)\to0,
+ \qquad f^{(2k+2)}(x)\to0. \tag{5}\label{vanish}
+\]
+Sur $[1,N]$, int\'egrons deux fois par parties, par morceaux aux entiers. La
+continuit\'e de $\Bper{2k+2}$ et de $\Bper{2k+3}$ emp\^eche l'apparition de
+termes int\'erieurs aux points entiers. Comme
+$(\Bper{r+1})'=(r+1)\Bper r$ hors des entiers, nous obtenons
+\begin{align*}
+\frac1{(2k+1)!}\int_1^N \Bper{2k+1}f^{(2k+1)}
+={}&\left[\frac{\Bper{2k+2}f^{(2k+1)}}{(2k+2)!}\right]_1^N\\
+&-\left[\frac{\Bper{2k+3}f^{(2k+2)}}{(2k+3)!}\right]_1^N
++\frac1{(2k+3)!}\int_1^N\Bper{2k+3}f^{(2k+3)}.
+\end{align*}
+Or $\Bper{2k+2}(1)=B_{2k+2}$ et
+$\Bper{2k+3}(1)=B_{2k+3}=0$. Les termes en $N$ tendent vers $0$ d'apr\`es
+\eqref{vanish}; la derni\`ere int\'egrale converge absolument. En faisant tendre
+$N$ vers l'infini, il vient
+\[
+ \frac1{(2k+1)!}\int_1^\infty\Bper{2k+1}f^{(2k+1)}
+ =-\frac{B_{2k+2}}{(2k+2)!}f^{(2k+1)}(1)
+ +\frac1{(2k+3)!}\int_1^\infty\Bper{2k+3}f^{(2k+3)}.
+\]
+Substitu\'ee dans \eqref{Ck}, cette identit\'e transforme $C_k(f)$ exactement
+en $C_{k+1}(f)$. La r\'ecurrence ach\`eve la preuve.
+\end{proofbox}
+
+\section{Remarques et extensions}
+\begin{remarkbox}
+La constante $C_k(f)$ est une partie finie de la diff\'erence entre la somme
+discr\`ete et l'int\'egrale. La stabilisation affirme que, d\`es que suffisamment
+de d\'eriv\'ees impaires sont int\'egrables, l'ajout de termes d'Euler--Maclaurin
+ne modifie plus cette partie finie; il ne fait que redistribuer le reste.
+\end{remarkbox}
+
+\section{R\'ef\'erence}
+G. Tenenbaum, \emph{Introduction \`a la th\'eorie analytique et probabiliste
+des nombres}, 4e \'edition, Belin, 2015, chapitre I.0, exercice 4.
+
+\part{Quatri\`eme exercice de I.1 : th\'eor\`eme fondamental de l'arithm\'etique}
+
+\section{\'Enonc\'e reformul\'e}
+\begin{theorembox}
+\textbf{Exercice I.1.13.}
+En utilisant le premier th\'eor\`eme d'Euclide, \'etablir par r\'ecurrence que
+tout entier $n>1$ poss\`ede, \`a l'ordre des facteurs pr\`es, une unique
+d\'ecomposition en produit de nombres premiers.
+\end{theorembox}
+
+\section{Conventions et pr\'erequis}
+Un nombre premier est un entier $p\geq2$ dont les seuls diviseurs positifs sont
+$1$ et $p$. Une factorisation premi\`ere de $n>1$ est une \'egalit\'e
+$n=p_1\cdots p_r$ avec $r\geq1$ et $p_i$ premiers.
+
+\section{Lemmes interm\'ediaires}
+\begin{lemmabox}
+\textbf{Premier th\'eor\`eme d'Euclide.}
+Si $p$ est premier et si $p\mid ab$, alors $p\mid a$ ou $p\mid b$.
+\end{lemmabox}
+\begin{proofbox}
+Supposons $p\nmid a$. Puisque les diviseurs positifs de $p$ sont $1$ et $p$,
+on a $\pgcd(a,p)=1$. Le th\'eor\`eme de Bachet fournit $u,v\in\Z$ tels que
+$up+va=1$. En multipliant par $b$,
+\[
+ b=ubp+vab.
+\]
+Le premier terme du membre droit est divisible par $p$, et le second l'est parce
+que $p\mid ab$. Ainsi $p\mid b$.
+\end{proofbox}
+
+\begin{lemmabox}
+\textbf{Lemme d'Euclide it\'er\'e.}
+Si $p$ est premier et $p\mid a_1\cdots a_r$, alors $p\mid a_i$ pour au moins
+un indice $i\in\{1,\ldots,r\}$.
+\end{lemmabox}
+\begin{proofbox}
+La preuve se fait par r\'ecurrence sur $r$. Pour $r=1$, l'assertion est la
+d\'efinition de la divisibilit\'e. Supposons-la vraie au rang $r-1$. Si
+$p\mid(a_1\cdots a_{r-1})a_r$, le premier th\'eor\`eme d'Euclide donne
+$p\mid a_r$ ou $p\mid a_1\cdots a_{r-1}$. Dans le second cas, l'hypoth\`ese de
+r\'ecurrence fournit l'indice recherch\'e parmi $1,\ldots,r-1$.
+\end{proofbox}
+
+\section{Preuve principale}
+\begin{theorembox}
+\textbf{Th\'eor\`eme fondamental de l'arithm\'etique.}
+Tout entier $n>1$ admet une factorisation premi\`ere. Si
+\[
+ n=p_1\cdots p_r=q_1\cdots q_s
+\]
+avec tous les $p_i,q_j$ premiers, alors $r=s$ et il existe une permutation
+$\sigma$ de $\{1,\ldots,r\}$ telle que $p_i=q_{\sigma(i)}$ pour tout $i$.
+\end{theorembox}
+\begin{proofbox}
+\textbf{Existence.} Proc\'edons par r\'ecurrence forte sur $n\geq2$. Pour $n=2$,
+l'entier $2$ est premier, donc constitue lui-m\^eme une factorisation. Supposons
+que tout entier $m$ tel que $2\leq m<n$ admette une factorisation premi\`ere.
+Si $n$ est premier, la conclusion est acquise. Sinon, il existe $a,b\in\N$ tels
+que $n=ab$ et $1<a<n$, $1<b<n$. Par l'hypoth\`ese de r\'ecurrence forte,
+$a$ et $b$ sont des produits de nombres premiers; leur produit fournit une
+factorisation premi\`ere de $n$.
+
+\medskip
+\textbf{Unicit\'e.} Proc\'edons par r\'ecurrence sur le nombre $r$ de facteurs
+de la premi\`ere factorisation. Si $r=1$, alors $n=p_1$ est premier. Comme
+$p_1\mid q_1\cdots q_s$, le lemme it\'er\'e fournit un indice $j$ tel que
+$p_1\mid q_j$. Le nombre $q_j$ \'etant premier, ses diviseurs positifs sont
+$1$ et $q_j$; puisque $p_1>1$, on a $p_1=q_j$. L'\'egalit\'e
+$p_1=q_1\cdots q_s$ impose alors $s=1$: si $s\geq2$, apr\`es avoir plac\'e
+$q_j$ en premi\`ere position, la simplification donnerait
+$1=q_2\cdots q_s\geq2$, contradiction.
+
+Supposons l'unicit\'e d\'emontr\'ee pour toute factorisation comportant $r-1$
+facteurs et consid\'erons
+$p_1\cdots p_r=q_1\cdots q_s$. Le nombre premier $p_1$ divise le produit de
+droite; le lemme it\'er\'e fournit $j$ tel que $p_1\mid q_j$, donc $p_1=q_j$.
+Apr\`es permutation des $q_j$, on peut supposer $p_1=q_1$. La loi de
+simplification dans $\N^*$ donne
+\[
+ p_2\cdots p_r=q_2\cdots q_s.
+\]
+L'hypoth\`ese de r\'ecurrence implique $r-1=s-1$ et l'\'egalit\'e des facteurs
+restants \`a permutation pr\`es. En r\'eintroduisant $p_1=q_1$, on obtient la
+conclusion au rang $r$.
+\end{proofbox}
+
+\section{Remarques et extensions}
+\begin{resultbox}
+En regroupant les facteurs premiers identiques et en ordonnant les premiers, on
+obtient l'\'ecriture canonique
+\[
+ n=\prod_{p\mid n}p^{v_p(n)},
+\]
+o\`u chaque $v_p(n)\in\N^*$ est uniquement d\'etermin\'e. Cette \'ecriture
+entra\^ine $v_p(ab)=v_p(a)+v_p(b)$.
+\end{resultbox}
+
+\section{R\'ef\'erence}
+G. Tenenbaum, ouvrage cit\'e, chapitre I.1, exercice 13 (quatri\`eme exercice de
+la liste du chapitre).
+
+\part{Quatri\`eme exercice de II.1 : comportement ab\'elien d'une s\'erie de Dirichlet}
+
+\section{\'Enonc\'e reformul\'e}
+\begin{theorembox}
+\textbf{Exercice II.1.158.}
+Soit $F(s)=\sum_{n\geq1}a_n n^{-s}$ une s\'erie de Dirichlet et
+$A(x)=\sum_{1\leq n\leq x}a_n$. On suppose qu'il existe $z\in\C$,
+$\re z>-1$, tel que
+\[
+ A(x)\sim x(\log x)^z\qquad(x\to\infty).
+\]
+Montrer que, lorsque $s\to1$ en restant dans le demi-plan $\re s>1$,
+\[
+ F(s)=\frac{\Gamma(z+1)}{(s-1)^{z+1}}
+ +o\!\left(\frac1{(\re s-1)^{\re z+1}}\right).
+\]
+\end{theorembox}
+
+\section{Conventions et pr\'erequis}
+Pour $t>0$ et $z\in\C$, on pose $t^z=e^{z\log t}$, o\`u $\log t$ est r\'eel.
+Pour $w$ dans le demi-plan $\re w>0$, $w^{z+1}$ est d\'efini par la branche
+principale du logarithme, bien d\'efinie sur ce demi-plan. L'\'equivalent complexe
+signifie
+\[
+ \frac{A(x)}{x(\log x)^z}\longrightarrow1.
+\]
+
+\section{Lemmes interm\'ediaires}
+\begin{lemmabox}
+\textbf{Lemme 3 (repr\'esentation int\'egrale).}
+Pour $\re s>1$ suffisamment proche de $1$,
+\[
+ F(s)=s\int_1^\infty A(x)x^{-s-1}\,dx
+     =s\int_0^\infty A(e^t)e^{-st}\,dt. \tag{6}
+\]
+\end{lemmabox}
+\begin{proofbox}
+L'hypoth\`ese asymptotique implique qu'il existe $X\geq e$ et $C>0$ tels que
+$|A(x)|\leq Cx(\log x)^{\re z}$ pour $x\geq X$. Pour tout $s$ de partie
+r\'eelle $\sigma>1$, l'int\'egrale
+\[
+ \int_X^\infty |A(x)|x^{-\sigma-1}\,dx
+ \leq C\int_X^\infty x^{-\sigma}(\log x)^{\re z}\,dx
+\]
+converge; apr\`es $x=e^t$, son int\'egrande est
+$e^{-(\sigma-1)t}t^{\re z}$, int\'egrable \`a l'infini. La sommation d'Abel sur
+$[1,N]$ donne
+\[
+ \sum_{n\leq N}\frac{a_n}{n^s}
+ =\frac{A(N)}{N^s}+s\int_1^N A(x)x^{-s-1}\,dx.
+\]
+Or $A(N)N^{-s}=O(N^{1-\sigma}(\log N)^{\re z})\to0$. Le passage \`a la
+limite fournit la premi\`ere identit\'e de (6), et le changement de variable
+$x=e^t$ fournit la seconde.
+\end{proofbox}
+
+\begin{lemmabox}
+\textbf{Lemme 4 (transform\'ee de Laplace complexe).}
+Si $\re z>-1$ et $\re w>0$, alors
+\[
+ \int_0^\infty e^{-wt}t^z\,dt=\Gamma(z+1)w^{-z-1}. \tag{7}
+\]
+\end{lemmabox}
+\begin{proofbox}
+Pour $w>0$ r\'eel, le changement de variable $u=wt$ dans la d\'efinition de
+$\Gamma$ donne (7). Les deux membres sont holomorphes en $w$ sur le demi-plan
+$\re w>0$. Pour l'int\'egrale, l'holomorphie r\'esulte de la convergence uniforme
+sur tout compact, les d\'eriv\'ees \'etant domin\'ees par
+$t^{\re z+j}e^{-\delta t}$. Le principe d'identit\'e prolonge donc (7) du
+demi-axe r\'eel positif au demi-plan entier.
+\end{proofbox}
+
+\section{Preuve principale}
+Posons $w=s-1$, $a=\re z>-1$ et
+\[
+ \eta(t):=\frac{A(e^t)}{e^t t^z}-1
+ \quad(t>0).
+\]
+L'hypoth\`ese donne $\eta(t)\to0$ lorsque $t\to\infty$. Par le Lemme 3,
+\begin{align}
+F(s)
+&=s\int_0^\infty e^{-wt}t^z\,dt
+  +s\int_0^\infty e^{-wt}t^z\eta(t)\,dt \notag\\
+&=s\Gamma(z+1)w^{-z-1}+sE(w), \tag{8}
+\end{align}
+o\`u la valeur de $\eta$ sur un intervalle born\'e peut \^etre red\'efinie sans
+incidence, le morceau correspondant \'etant born\'e.
+
+Nous prouvons
+\[
+ E(w)=o\bigl((\re w)^{-a-1}\bigr)\qquad(w\to0,\ \re w>0). \tag{9}
+\]
+Soit $\eps>0$. Il existe $T>0$ tel que $|\eta(t)|\leq\eps$ pour $t\geq T$.
+La partie de $E(w)$ sur $[0,T]$ est born\'ee par une constante $M_T$ lorsque
+$w\to0$ dans $\re w>0$. Comme $a+1>0$,
+$M_T=o((\re w)^{-a-1})$. Pour la queue,
+\begin{align*}
+\left|\int_T^\infty e^{-wt}t^z\eta(t)\,dt\right|
+&\leq\eps\int_T^\infty e^{-(\re w)t}t^a\,dt\\
+&\leq\eps\int_0^\infty e^{-(\re w)t}t^a\,dt
+=\eps\Gamma(a+1)(\re w)^{-a-1}.
+\end{align*}
+Le caract\`ere arbitraire de $\eps$ \'etablit (9).
+
+Il reste \`a remplacer le facteur $s=1+w$ du terme principal de (8) par $1$.
+Le terme suppl\'ementaire vaut
+\[
+ \Gamma(z+1)w^{-z}.
+\]
+Il est n\'egligeable devant $(\re w)^{-a-1}$. En effet, si $a\geq0$,
+\[
+ \frac{|w|^{-a}}{(\re w)^{-a-1}}
+ =(\re w)\left(\frac{\re w}{|w|}\right)^a\leq\re w\to0;
+\]
+si $-1<a<0$, en \'ecrivant $b=-a\in(0,1)$,
+\[
+ \frac{|w|^b}{(\re w)^{b-1}}
+ =|w|^b(\re w)^{1-b}\longrightarrow0,
+\]
+car $|w|\to0$ et $\re w\to0$. Enfin $s\to1$, donc le facteur $s$ devant
+$E(w)$ ne modifie pas (9). En reportant ces estimations dans (8), on obtient
+\begin{resultbox}
+\[
+ \boxed{\displaystyle
+ F(s)=\frac{\Gamma(z+1)}{(s-1)^{z+1}}
+ +o\!\left((\re s-1)^{-\re z-1}\right)}
+ \qquad(s\to1,\ \re s>1).
+\]
+\end{resultbox}
+
+\section{Remarques et extensions}
+\begin{remarkbox}
+La preuve est ab\'elienne : une asymptotique de la fonction sommatoire des
+coefficients impose une singularit\'e pr\'ecise de la s\'erie de Dirichlet. La
+majoration du reste ne suppose aucune approche non tangentielle de $s=1$;
+l'emploi de $\re(s-1)$ dans l'\'echelle d'erreur est pr\'ecis\'ement ce qui rend
+l'\'enonc\'e uniforme dans tout le demi-plan droit.
+\end{remarkbox}
+
+\section{R\'ef\'erence}
+G. Tenenbaum, ouvrage cit\'e, chapitre II.1, exercice 158 (quatri\`eme exercice
+de la liste du chapitre).
+
+\end{document}

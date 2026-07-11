@@ -1,0 +1,172 @@
+% !TEX program = lualatex
+\documentclass[11pt,a4paper]{article}
+
+% 1. fontspec
+\usepackage{fontspec}
+% 2. amsmath (requis avant amsthm)
+\usepackage{amsmath}
+% 3. amssymb
+\usepackage{amssymb}
+% 4. amsthm
+\usepackage{amsthm}
+% 5. tcolorbox
+\usepackage[skins,breakable]{tcolorbox}
+% 6. geometry
+\usepackage{geometry}
+\geometry{margin=2.5cm, headheight=20pt}
+% 7. polyglossia
+\usepackage{polyglossia}
+\setdefaultlanguage{french}
+% 8. palette-agreg EN DERNIER
+\usepackage{palette-agreg}
+
+\begin{document}
+
+\section{Projection sur un convexe fermé}
+
+Soit $H$ un espace de Hilbert réel, de produit scalaire $\langle \cdot,\cdot\rangle$
+et de norme associée $\|\cdot\|$. Soit $C \subset H$ une partie convexe fermée non vide.
+
+% ============================================================
+% QUESTION 1
+% ============================================================
+\begin{theorem}[Existence et unicité de la projection]
+Pour tout $x \in H$, il existe un unique élément $p_C(x) \in C$ tel que
+\[
+\|x - p_C(x)\| = \inf_{y \in C} \|x - y\|.
+\]
+\end{theorem}
+
+\begin{proof}
+\noindent
+\textbf{Étape 1 -- Existence.}\\
+Soit $x \in H$ et posons $d = \inf_{y \in C} \|x - y\| \geq 0$.
+Il existe une suite minimisante $(y_n)_{n\in\mathbb{N}}$ dans $C$ telle que
+$\|x - y_n\| \to d$.
+
+Montrons que $(y_n)$ est de Cauchy. Par l'identité du parallélogramme appliquée
+à $x - y_n$ et $x - y_m$ :
+\[
+\|y_n - y_m\|^2
+= 2\|x - y_n\|^2 + 2\|x - y_m\|^2 - 4\Bigl\|x - \frac{y_n + y_m}{2}\Bigr\|^2.
+\]
+Puisque $C$ est convexe, $\frac{y_n + y_m}{2} \in C$, donc
+$\bigl\|x - \frac{y_n + y_m}{2}\bigr\| \geq d$. On en déduit :
+\[
+\|y_n - y_m\|^2 \leq 2\|x - y_n\|^2 + 2\|x - y_m\|^2 - 4d^2 \xrightarrow[n,m \to +\infty]{} 0.
+\]
+Ainsi $(y_n)$ est de Cauchy. Par complétude de $H$, elle converge vers un
+élément $p \in H$, et $p \in C$ car $C$ est fermé. Par continuité de la norme :
+\[
+\|x - p\| = \lim_{n\to\infty} \|x - y_n\| = d.
+\]
+
+\textbf{Étape 2 -- Unicité.}\\
+Soient $p_1, p_2 \in C$ tels que $\|x - p_1\| = \|x - p_2\| = d$.
+L'identité du parallélogramme donne :
+\[
+\|p_1 - p_2\|^2
+= 2\|x - p_1\|^2 + 2\|x - p_2\|^2 - 4\Bigl\|x - \frac{p_1 + p_2}{2}\Bigr\|^2
+\leq 2d^2 + 2d^2 - 4d^2 = 0,
+\]
+car $\frac{p_1+p_2}{2} \in C$ (convexité) et donc
+$\bigl\|x - \frac{p_1+p_2}{2}\bigr\| \geq d$.
+Ainsi $p_1 = p_2$.
+\end{proof}
+
+% ============================================================
+% QUESTION 2
+% ============================================================
+\begin{proposition}[Caractérisation variationnelle]
+Soit $x \in H$. L'élément $p_C(x)$ est l'unique élément $y \in C$ vérifiant
+\[
+\langle x - y,\, z - y \rangle \leq 0 \quad \text{pour tout } z \in C.
+\]
+\end{proposition}
+
+\begin{proof}
+\noindent
+\textbf{Étape 1 -- Sens direct.}\\
+Posons $y = p_C(x)$ et soit $z \in C$. Pour tout $t \in ]0,1]$, la convexité de $C$
+donne $(1-t)\,y + t\,z \in C$. Par définition de $y$ comme minimiseur :
+\[
+\|x - y\|^2 \leq \|x - y - t(z - y)\|^2
+= \|x - y\|^2 - 2t\,\langle x - y,\, z - y\rangle + t^2\|z - y\|^2.
+\]
+En simplifiant par $\|x-y\|^2$ puis en divisant par $t > 0$ :
+\[
+2\,\langle x - y,\, z - y\rangle \leq t\,\|z - y\|^2.
+\]
+En faisant tendre $t \to 0^+$, on obtient $\langle x - y,\, z - y\rangle \leq 0$.
+
+\textbf{Étape 2 -- Réciproque.}\\
+Soit $y \in C$ tel que $\langle x - y,\, z - y\rangle \leq 0$ pour tout $z \in C$.
+Pour tout $z \in C$ :
+\[
+\|x - z\|^2 = \|x - y\|^2 - 2\langle x - y,\, z - y\rangle + \|z - y\|^2 \geq \|x - y\|^2.
+\]
+Ainsi $y$ minimise $\|x - z\|$ sur $C$, donc $y = p_C(x)$ par unicité.
+
+\textbf{Étape 3 -- Unicité de la caractérisation.}\\
+Elle découle immédiatement de l'unicité de la projection établie au théorème précédent.
+\end{proof}
+
+% ============================================================
+% QUESTION 3
+% ============================================================
+\begin{proposition}[Cas d'un sous-espace vectoriel fermé]
+Soit $F$ un sous-espace vectoriel fermé de $H$. Alors~:
+\begin{enumerate}
+\item Pour tout $x \in H$ et tout $z \in F$~:
+$\langle x - p_F(x),\, z \rangle = 0$.
+\item L'application $p_F : H \to F$ est \keyword{linéaire} et continue,
+avec $\|p_F\| \leq 1$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\noindent
+\textbf{Étape 1 -- Orthogonalité.}\\
+Soit $x \in H$ et posons $y = p_F(x)$. D'après la caractérisation variationnelle,
+$\langle x - y,\, z - y\rangle \leq 0$ pour tout $z \in F$.
+
+Puisque $F$ est un sous-espace vectoriel, pour tout $z \in F$~:
+\begin{itemize}
+\item $y + z \in F$, donc $\langle x - y,\, z\rangle \leq 0$~;
+\item $y - z \in F$, donc $-\langle x - y,\, z\rangle \leq 0$, i.e.\ $\langle x - y,\, z\rangle \geq 0$.
+\end{itemize}
+On en déduit $\langle x - y,\, z\rangle = 0$ pour tout $z \in F$.
+
+\textbf{Étape 2 -- Linéarité.}\\
+Soient $x_1, x_2 \in H$ et $\lambda \in \mathbb{R}$. D'après l'étape~1,
+$\langle x_i - p_F(x_i),\, z\rangle = 0$ pour tout $z \in F$ et $i \in \{1,2\}$.
+Par linéarité du produit scalaire :
+\[
+\bigl\langle (\lambda x_1 + x_2) - (\lambda\, p_F(x_1) + p_F(x_2)),\, z\bigr\rangle = 0
+\quad \text{pour tout } z \in F.
+\]
+De plus $\lambda\, p_F(x_1) + p_F(x_2) \in F$ car $F$ est un sous-espace vectoriel.
+Par la caractérisation de l'étape~1 (l'orthogonalité caractérise la projection
+dans le cas d'un sous-espace), on conclut par unicité :
+\[
+p_F(\lambda x_1 + x_2) = \lambda\, p_F(x_1) + p_F(x_2).
+\]
+
+\textbf{Étape 3 -- Continuité.}\\
+Puisque $p_F(x) \in F$ et $x - p_F(x) \perp F$, on a en particulier
+$x - p_F(x) \perp p_F(x)$. Par le théorème de Pythagore :
+\[
+\|x\|^2 = \|p_F(x)\|^2 + \|x - p_F(x)\|^2 \geq \|p_F(x)\|^2.
+\]
+Ainsi $\|p_F(x)\| \leq \|x\|$ pour tout $x \in H$~: $p_F$ est $1$-lipschitzienne,
+donc continue, et $\|p_F\| \leq 1$.
+\end{proof}
+
+\begin{remark}
+On déduit de ce qui précède la décomposition orthogonale
+$H = F \oplus F^\perp$~: tout $x \in H$ s'écrit de manière unique
+$x = p_F(x) + (x - p_F(x))$ avec $p_F(x) \in F$ et $x - p_F(x) \in F^\perp$.
+De plus, $\|p_F\| = 1$ dès que $F \neq \{0\}$ (considérer $x \in F \setminus \{0\}$).
+\end{remark}
+
+\end{document}

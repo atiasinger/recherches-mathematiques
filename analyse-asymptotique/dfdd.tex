@@ -1,0 +1,67 @@
+% !TEX program = lualatex
+\documentclass[11pt,a4paper]{article}
+
+% 1. fontspec
+\usepackage{fontspec}
+% 2. amsmath (requis avant amsthm)
+\usepackage{amsmath}
+% 3. amssymb
+\usepackage{amssymb}
+% 4. amsthm
+\usepackage{amsthm}
+% 5. tcolorbox
+\usepackage[skins,breakable]{tcolorbox}
+% 6. geometry
+\usepackage{geometry}
+\geometry{margin=2.5cm, headheight=20pt}
+% 7. polyglossia
+\usepackage{polyglossia}
+\setdefaultlanguage{french}
+% 8. palette-agreg EN DERNIER
+\usepackage{palette-agreg}
+
+\begin{document}
+
+\section{Lemme de la corde universelle}
+
+\begin{theorem}[Lemme de la corde universelle]
+Soit $f : [0,1] \to \mathbb{R}$ une fonction continue telle que $f(0) = f(1)$. 
+Alors il existe $c \in [0, 1/2]$ tel que $f(c) = f\left(c + \frac{1}{2}\right)$.
+\end{theorem}
+
+\begin{proof}
+\noindent
+\textbf{Étape 1 -- Définition d'une fonction auxiliaire.}\\
+Posons $g : [0, 1/2] \to \mathbb{R}$ définie par :
+\[ g(x) = f(x) - f\left(x + \frac{1}{2}\right) \]
+
+\textbf{Étape 2 -- Continuité de $g$.}\\
+La fonction $f$ est continue sur $[0,1]$ par hypothèse. L'application $x \mapsto x + \frac{1}{2}$ est continue sur $[0, 1/2]$ et à valeurs dans $[1/2, 1] \subset [0,1]$. Par composition, $x \mapsto f\left(x + \frac{1}{2}\right)$ est continue sur $[0, 1/2]$. Par somme, $g$ est continue sur $[0, 1/2]$.
+
+\textbf{Étape 3 -- Évaluation aux bornes.}\\
+Calculons $g(0)$ et $g(1/2)$ :
+\[ g(0) = f(0) - f\left(\frac{1}{2}\right) \]
+\[ g\left(\frac{1}{2}\right) = f\left(\frac{1}{2}\right) - f(1) \]
+En sommant ces deux quantités, on obtient :
+\[ g(0) + g\left(\frac{1}{2}\right) = f(0) - f(1) \]
+
+\textbf{Étape 4 -- Utilisation de l'hypothèse $f(0) = f(1)$.}\\
+D'après l'hypothèse, $f(0) - f(1) = 0$, donc :
+\[ g(0) + g\left(\frac{1}{2}\right) = 0 \implies g\left(\frac{1}{2}\right) = -g(0) \]
+
+\textbf{Étape 5 -- Application du \keyword{Théorème des Valeurs Intermédiaires}.}\\
+Deux cas se présentent :
+\begin{itemize}
+    \item \textbf{Cas 1 :} Si $g(0) = 0$, alors $f(0) = f(1/2)$. Le réel $c = 0 \in [0, 1/2]$ convient.
+    \item \textbf{Cas 2 :} Si $g(0) \neq 0$, alors $g(0)$ et $g(1/2)$ sont non nuls et de signes opposés. Puisque $g$ est continue sur le segment $[0, 1/2]$, d'après le théorème des valeurs intermédiaires, il existe $c \in \, ]0, 1/2[ \subset [0, 1/2]$ tel que $g(c) = 0$.
+\end{itemize}
+
+\textbf{Étape 6 -- Conclusion.}\\
+Dans les deux cas, il existe $c \in [0, 1/2]$ tel que $g(c) = 0$, c'est-à-dire $f(c) = f\left(c + \frac{1}{2}\right)$.
+\end{proof}
+
+\begin{remark}
+Ce résultat se généralise : si $f : [0,1] \to \mathbb{R}$ est continue avec $f(0)=f(1)$, alors pour tout entier $n \ge 2$, il existe $c \in [0, 1 - 1/n]$ tel que $f(c) = f(c + 1/n)$. La démonstration est analogue en considérant la somme des $g_k(x) = f(x + k/n) - f(x + (k+1)/n)$ pour $k \in \{0, \dots, n-2\}$.
+\end{remark}
+
+\end{document}

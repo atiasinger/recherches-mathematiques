@@ -1,0 +1,180 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- MOTEUR ET POLICES ---
+\usepackage{fontspec}
+
+% --- MATHÉMATIQUES ---
+\usepackage{amsmath}    % OBLIGATOIRE, chargé avant amsthm
+\usepackage{amssymb}
+
+% --- BOÎTES ---
+\usepackage[skins,breakable]{tcolorbox}
+
+% --- MISE EN PAGE ---
+\usepackage{geometry}
+\geometry{margin=2.5cm, headheight=20pt}
+
+% --- LANGUE ---
+\usepackage{polyglossia}
+\setdefaultlanguage{french}
+
+% --- PALETTE AGREG ---
+\usepackage{palette-agreg}
+
+\begin{document}
+
+\section{Projection sur un convexe fermé d'un espace de Hilbert}
+
+Dans toute la suite, $H$ désigne un espace de Hilbert réel de produit scalaire
+$\langle \cdot, \cdot \rangle$ et de norme associée $\|\cdot\|$, et $C$ une
+partie \keyword{convexe fermée non vide} de $H$.
+
+% ============================================================
+% PARTIE 1
+% ============================================================
+\begin{theorem}[Existence et unicité de la projection]
+Pour tout $x \in H$, il existe un unique élément $p_C(x) \in C$ tel que
+\[
+\|x - p_C(x)\| = \inf_{y \in C} \|x - y\|.
+\]
+\end{theorem}
+
+\begin{proof}
+\noindent
+\textbf{Étape 1 -- Existence.}\\
+Soit $x \in H$. Posons $d = \inf_{y \in C} \|x - y\| \geq 0$.
+Par définition de la borne inférieure, il existe une suite $(y_n)_{n \in \mathbb{N}}$
+d'éléments de $C$ telle que $\|x - y_n\| \to d$ : c'est une suite minimisante.
+
+Montrons que $(y_n)$ est de Cauchy. Appliquons l'\keyword{identité du parallélogramme}
+aux vecteurs $x - y_n$ et $x - y_m$ :
+\[
+\|y_n - y_m\|^2 = 2\|x - y_n\|^2 + 2\|x - y_m\|^2 - 4\left\|x - \frac{y_n + y_m}{2}\right\|^2.
+\]
+Puisque $C$ est convexe et $y_n, y_m \in C$, on a $\frac{y_n + y_m}{2} \in C$,
+donc $\left\|x - \frac{y_n + y_m}{2}\right\| \geq d$. On en déduit :
+\[
+\|y_n - y_m\|^2 \leq 2\|x - y_n\|^2 + 2\|x - y_m\|^2 - 4d^2.
+\]
+Lorsque $n, m \to +\infty$, le membre de droite tend vers $2d^2 + 2d^2 - 4d^2 = 0$.
+Ainsi $(y_n)$ est de Cauchy. Puisque $H$ est complet, $(y_n)$ converge vers
+un élément $p \in H$. De plus, $C$ étant fermé, on a $p \in C$.
+
+Enfin, par continuité de la norme :
+\[
+\|x - p\| = \lim_{n \to \infty} \|x - y_n\| = d.
+\]
+
+\textbf{Étape 2 -- Unicité.}\\
+Soient $p_1, p_2 \in C$ tels que $\|x - p_1\| = \|x - p_2\| = d$.
+En appliquant à nouveau l'identité du parallélogramme :
+\[
+\|p_1 - p_2\|^2 = 2\|x - p_1\|^2 + 2\|x - p_2\|^2 - 4\left\|x - \frac{p_1 + p_2}{2}\right\|^2
+\leq 2d^2 + 2d^2 - 4d^2 = 0,
+\]
+car $\frac{p_1 + p_2}{2} \in C$ (convexité) et donc
+$\left\|x - \frac{p_1 + p_2}{2}\right\| \geq d$.
+Ainsi $p_1 = p_2$, ce qui prouve l'unicité.
+\end{proof}
+
+% ============================================================
+% PARTIE 2
+% ============================================================
+\begin{proposition}[Caractérisation variationnelle]
+Soit $x \in H$. L'élément $p_C(x)$ est l'unique élément $y \in C$ vérifiant
+\[
+\langle x - y, \, z - y \rangle \leq 0 \quad \text{pour tout } z \in C.
+\]
+\end{proposition}
+
+\begin{proof}
+\noindent
+\textbf{Étape 1 -- Sens direct : $p_C(x)$ vérifie l'inégalité variationnelle.}\\
+Posons $y = p_C(x)$ et soit $z \in C$. Pour tout $t \in ]0, 1]$, la convexité de $C$
+donne $y + t(z - y) = (1-t)\,y + t\,z \in C$. Par définition de $y$ comme minimiseur :
+\[
+\|x - y\|^2 \leq \|x - y - t(z - y)\|^2 = \|x - y\|^2 - 2t\langle x - y, \, z - y\rangle + t^2\|z - y\|^2.
+\]
+En simplifiant et en divisant par $t > 0$ :
+\[
+2\langle x - y, \, z - y\rangle \leq t\,\|z - y\|^2.
+\]
+En faisant tendre $t \to 0^+$, on obtient $\langle x - y, \, z - y\rangle \leq 0$.
+
+\medskip
+\textbf{Étape 2 -- Réciproque : l'inégalité variationnelle caractérise $p_C(x)$.}\\
+Soit $y \in C$ tel que $\langle x - y, \, z - y\rangle \leq 0$ pour tout $z \in C$.
+Pour tout $z \in C$, on développe :
+\[
+\|x - z\|^2 = \|(x - y) - (z - y)\|^2 = \|x - y\|^2 - 2\langle x - y, \, z - y\rangle + \|z - y\|^2 \geq \|x - y\|^2.
+\]
+Ainsi $y$ minimise $\|x - z\|$ sur $C$, donc $y = p_C(x)$ par unicité de la projection.
+
+\medskip
+\textbf{Étape 3 -- Unicité de la caractérisation.}\\
+L'unicité découle immédiatement de l'unicité de la projection établie au théorème~précédent.
+\end{proof}
+
+% ============================================================
+% PARTIE 3
+% ============================================================
+\begin{proposition}[Cas d'un sous-espace vectoriel fermé]
+Soit $F$ un sous-espace vectoriel fermé de $H$. Alors~:
+\begin{enumerate}
+\item Pour tout $x \in H$ et tout $z \in F$~:
+$\langle x - p_F(x), \, z \rangle = 0$.
+\item L'application $p_F : H \to F$ est \keyword{linéaire} et \keyword{continue}
+(de norme $\|p_F\| \leq 1$).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\noindent
+\textbf{Étape 1 -- Orthogonalité.}\\
+Soit $x \in H$ et posons $y = p_F(x)$. D'après la caractérisation variationnelle
+(proposition précédente), on a $\langle x - y, \, z - y\rangle \leq 0$ pour tout $z \in F$.
+
+Puisque $F$ est un \keyword{sous-espace vectoriel}, pour tout $z \in F$~:
+\begin{itemize}
+\item $y + z \in F$, donc $\langle x - y, \, (y + z) - y\rangle = \langle x - y, \, z\rangle \leq 0$~;
+\item $y - z \in F$, donc $\langle x - y, \, (y - z) - y\rangle = -\langle x - y, \, z\rangle \leq 0$,
+soit $\langle x - y, \, z\rangle \geq 0$.
+\end{itemize}
+On en déduit $\langle x - y, \, z\rangle = 0$ pour tout $z \in F$.
+
+\medskip
+\textbf{Étape 2 -- Linéarité.}\\
+Soient $x_1, x_2 \in H$ et $\lambda \in \mathbb{R}$. D'après l'étape~1,
+$\langle x_i - p_F(x_i), \, z\rangle = 0$ pour tout $z \in F$ et $i \in \{1, 2\}$.
+Par linéarité du produit scalaire~:
+\[
+\langle (\lambda x_1 + x_2) - (\lambda p_F(x_1) + p_F(x_2)), \, z\rangle
+= \lambda \underbrace{\langle x_1 - p_F(x_1), \, z\rangle}_{=\,0} + \underbrace{\langle x_2 - p_F(x_2), \, z\rangle}_{=\,0} = 0
+\]
+pour tout $z \in F$. De plus, $\lambda\, p_F(x_1) + p_F(x_2) \in F$ car $F$ est un
+sous-espace vectoriel. L'élément $\lambda\, p_F(x_1) + p_F(x_2)$ vérifie donc
+la condition d'orthogonalité qui caractérise la projection, et par unicité~:
+\[
+p_F(\lambda x_1 + x_2) = \lambda\, p_F(x_1) + p_F(x_2).
+\]
+
+\medskip
+\textbf{Étape 3 -- Continuité.}\\
+D'après l'étape~1, $x - p_F(x) \perp p_F(x)$ car $p_F(x) \in F$.
+Par le \keyword{théorème de Pythagore}~:
+\[
+\|x\|^2 = \|p_F(x)\|^2 + \|x - p_F(x)\|^2 \geq \|p_F(x)\|^2.
+\]
+Ainsi $\|p_F(x)\| \leq \|x\|$ pour tout $x \in H$, ce qui montre que $p_F$ est
+$1$-lipschitzienne, donc continue, avec $\|p_F\| \leq 1$.
+\end{proof}
+
+\begin{remark}
+La proposition ci-dessus établit la décomposition orthogonale
+$H = F \oplus F^\perp$ : tout $x \in H$ s'écrit de manière unique
+$x = p_F(x) + (x - p_F(x))$ avec $p_F(x) \in F$ et $x - p_F(x) \in F^\perp$.
+L'application $\mathrm{Id}_H - p_F$ n'est autre que la projection orthogonale
+sur $F^\perp$. Enfin, $\|p_F\| = 1$ dès que $F \neq \{0\}$ (considérer $x \in F$).
+\end{remark}
+
+\end{document}
