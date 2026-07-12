@@ -1,0 +1,381 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{geometry}
+\usepackage{microtype}
+
+\geometry{
+  margin=2.4cm
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+% Couleurs imposees
+\definecolor{bleutheoreme}{RGB}{31,78,121}
+\definecolor{fondbleu}{RGB}{234,242,250}
+
+\definecolor{orangelemme}{RGB}{210,105,30}
+\definecolor{fondorange}{RGB}{255,244,230}
+
+\definecolor{vertpreuve}{RGB}{35,130,75}
+\definecolor{fondvert}{RGB}{235,248,239}
+
+\definecolor{violetremarque}{RGB}{112,48,160}
+\definecolor{fondviolet}{RGB}{246,238,252}
+
+\definecolor{rougeresultat}{RGB}{180,30,45}
+\definecolor{fondrouge}{RGB}{255,235,238}
+
+\newmdenv[
+  linecolor=bleutheoreme,
+  backgroundcolor=fondbleu,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt
+]{theoremebox}
+
+\newmdenv[
+  linecolor=orangelemme,
+  backgroundcolor=fondorange,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt
+]{lemmebox}
+
+\newmdenv[
+  linecolor=vertpreuve,
+  backgroundcolor=fondvert,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt
+]{preuvebox}
+
+\newmdenv[
+  linecolor=violetremarque,
+  backgroundcolor=fondviolet,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt
+]{remarquebox}
+
+\newmdenv[
+  linecolor=rougeresultat,
+  backgroundcolor=fondrouge,
+  linewidth=1.5pt,
+  roundcorner=4pt,
+  skipabove=12pt,
+  skipbelow=12pt
+]{resultatbox}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{\textbf{Somme de puissances dont l'exposant cro\^{i}t avec \(n\)}}
+\author{R\'edaction rigoureuse pour Mostafa}
+\date{12 juillet 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{theoremebox}
+\textbf{\'Enonc\'e.}
+Soit \(\alpha>0\). D\'emontrer que, lorsque \(n\) tend vers
+\(+\infty\),
+\[
+1^{\alpha n}+2^{\alpha n}+\cdots+n^{\alpha n}
+\sim
+\frac{n^{\alpha n}}{1-e^{-\alpha}}.
+\]
+\end{theoremebox}
+
+\begin{lemmebox}
+\textbf{Lemme 1.}
+Pour tout \(x\in[0,1)\),
+\[
+\log(1-x)\leq -x.
+\]
+En particulier, pour \(0\leq k<n\),
+\[
+0<
+\left(1-\frac{k}{n}\right)^{\alpha n}
+\leq e^{-\alpha k}.
+\]
+\end{lemmebox}
+
+\begin{preuvebox}
+\textbf{Preuve du lemme 1.}
+La fonction
+\[
+h(x)=\log(1-x)+x
+\]
+est d\'erivable sur \([0,1)\), et
+\[
+h'(x)=-\frac{1}{1-x}+1=-\frac{x}{1-x}\leq 0.
+\]
+Comme \(h(0)=0\), on obtient \(h(x)\leq0\), donc
+\[
+\log(1-x)\leq-x.
+\]
+En prenant \(x=k/n\) et en multipliant par \(\alpha n>0\),
+\[
+\alpha n\log\left(1-\frac{k}{n}\right)
+\leq-\alpha k.
+\]
+L'exponentiation conserve l'in\'egalit\'e, ce qui donne
+\[
+\left(1-\frac{k}{n}\right)^{\alpha n}
+\leq e^{-\alpha k}.
+\]
+\end{preuvebox}
+
+\begin{lemmebox}
+\textbf{Lemme 2.}
+Pour tout \(x\in[0,1/2]\),
+\[
+0\leq-\log(1-x)-x\leq x^2.
+\]
+\end{lemmebox}
+
+\begin{preuvebox}
+\textbf{Preuve du lemme 2.}
+Pour \(x\in[0,1)\), le d\'eveloppement en s\'erie enti\`ere de
+\(-\log(1-x)\) donne
+\[
+-\log(1-x)-x
+=\sum_{m=2}^{\infty}\frac{x^m}{m}.
+\]
+Tous les termes sont positifs. De plus, \(1/m\leq1/2\) pour
+\(m\geq2\). Par cons\'equent,
+\[
+0\leq-\log(1-x)-x
+\leq
+\frac12\sum_{m=2}^{\infty}x^m
+=
+\frac{x^2}{2(1-x)}.
+\]
+Si \(x\leq1/2\), alors \(2(1-x)\geq1\), d'o\`u
+\[
+-\log(1-x)-x\leq x^2.
+\]
+\end{preuvebox}
+
+\begin{preuvebox}
+\textbf{Preuve principale.}
+
+Posons
+\[
+S_n=\sum_{j=1}^{n}j^{\alpha n}.
+\]
+Apr\`es division par \(n^{\alpha n}\), puis changement d'indice
+\(k=n-j\), nous obtenons
+\[
+\frac{S_n}{n^{\alpha n}}
+=
+\sum_{j=1}^{n}\left(\frac{j}{n}\right)^{\alpha n}
+=
+\sum_{k=0}^{n-1}
+\left(1-\frac{k}{n}\right)^{\alpha n}.
+\]
+
+Nous allons comparer cette somme \`a la s\'erie g\'eom\'etrique
+\[
+\sum_{k=0}^{\infty}e^{-\alpha k}
+=
+\frac{1}{1-e^{-\alpha}}.
+\]
+
+Pour \(1\leq k<n\), le lemme 1 donne
+\[
+0<
+\left(1-\frac{k}{n}\right)^{\alpha n}
+\leq e^{-\alpha k}.
+\]
+Ainsi,
+\[
+\left|
+\left(1-\frac{k}{n}\right)^{\alpha n}
+-e^{-\alpha k}
+\right|
+=
+e^{-\alpha k}
+-\left(1-\frac{k}{n}\right)^{\alpha n}.
+\]
+
+Conform\'ement \`a l'indication, nous scindons l'erreur \`a
+l'indice \(\lfloor n/2\rfloor\). Posons
+\[
+E_n^{(1)}
+=
+\sum_{k=1}^{\lfloor n/2\rfloor}
+\left|
+\left(1-\frac{k}{n}\right)^{\alpha n}
+-e^{-\alpha k}
+\right|
+\]
+et
+\[
+E_n^{(2)}
+=
+\sum_{k=\lfloor n/2\rfloor+1}^{n-1}
+\left|
+\left(1-\frac{k}{n}\right)^{\alpha n}
+-e^{-\alpha k}
+\right|.
+\]
+
+Pour \(1\leq k\leq\lfloor n/2\rfloor\), posons
+\[
+\delta_{k,n}
+=
+-\log\left(1-\frac{k}{n}\right)-\frac{k}{n}.
+\]
+Le lemme 2 donne
+\[
+0\leq\delta_{k,n}\leq\frac{k^2}{n^2}.
+\]
+Nous avons
+\[
+\left(1-\frac{k}{n}\right)^{\alpha n}
+=
+e^{-\alpha k}e^{-\alpha n\delta_{k,n}}.
+\]
+L'in\'egalit\'e
+\[
+0\leq1-e^{-u}\leq u,
+\qquad u\geq0,
+\]
+entra\^{i}ne
+\[
+\begin{aligned}
+0
+&\leq
+e^{-\alpha k}
+-\left(1-\frac{k}{n}\right)^{\alpha n}\\
+&=
+e^{-\alpha k}
+\left(1-e^{-\alpha n\delta_{k,n}}\right)\\
+&\leq
+\alpha n e^{-\alpha k}\delta_{k,n}\\
+&\leq
+\frac{\alpha k^2}{n}e^{-\alpha k}.
+\end{aligned}
+\]
+Par cons\'equent,
+\[
+E_n^{(1)}
+\leq
+\frac{\alpha}{n}
+\sum_{k=1}^{\infty}k^2e^{-\alpha k}.
+\]
+La s\'erie
+\[
+\sum_{k=1}^{\infty}k^2e^{-\alpha k}
+\]
+converge, car \(\alpha>0\). Il s'ensuit que
+\[
+E_n^{(1)}\longrightarrow0.
+\]
+
+Pour la seconde partie, le lemme 1 donne
+\[
+E_n^{(2)}
+\leq
+\sum_{k=\lfloor n/2\rfloor+1}^{n-1}e^{-\alpha k}
+\leq
+\sum_{k=\lfloor n/2\rfloor+1}^{\infty}e^{-\alpha k}.
+\]
+La formule de sommation d'une s\'erie g\'eom\'etrique donne
+\[
+E_n^{(2)}
+\leq
+\frac{
+ e^{-\alpha(\lfloor n/2\rfloor+1)}
+}{
+ 1-e^{-\alpha}
+}
+\longrightarrow0.
+\]
+
+Enfin,
+\[
+\sum_{k=n}^{\infty}e^{-\alpha k}
+=
+\frac{e^{-\alpha n}}{1-e^{-\alpha}}
+\longrightarrow0.
+\]
+Nous en d\'eduisons
+\[
+\begin{aligned}
+&
+\left|
+\sum_{k=0}^{n-1}
+\left(1-\frac{k}{n}\right)^{\alpha n}
+-
+\sum_{k=0}^{\infty}e^{-\alpha k}
+\right|\\
+&\hspace{2cm}
+\leq
+E_n^{(1)}+E_n^{(2)}
++\sum_{k=n}^{\infty}e^{-\alpha k}
+\longrightarrow0.
+\end{aligned}
+\]
+Ainsi,
+\[
+\frac{S_n}{n^{\alpha n}}
+\longrightarrow
+\sum_{k=0}^{\infty}e^{-\alpha k}
+=
+\frac{1}{1-e^{-\alpha}}.
+\]
+\end{preuvebox}
+
+\begin{resultatbox}
+\textbf{R\'esultat final.}
+Pour tout \(\alpha>0\),
+\[
+\boxed{
+1^{\alpha n}+2^{\alpha n}+\cdots+n^{\alpha n}
+\sim
+\frac{n^{\alpha n}}{1-e^{-\alpha}}
+}
+\qquad(n\longrightarrow+\infty).
+\]
+\end{resultatbox}
+
+\begin{remarquebox}
+\textbf{Remarque.}
+La constante
+\[
+\frac{1}{1-e^{-\alpha}}
+\]
+provient des termes situ\'es \`a distance born\'ee de \(n\).
+Pour chaque entier fix\'e \(k\geq0\),
+\[
+\left(\frac{n-k}{n}\right)^{\alpha n}
+\longrightarrow e^{-\alpha k}.
+\]
+Les termes \(n^{\alpha n},(n-1)^{\alpha n},(n-2)^{\alpha n}\)
+produisent donc asymptotiquement les contributions respectives
+\[
+1,\quad e^{-\alpha},\quad e^{-2\alpha},
+\]
+apr\`es normalisation par \(n^{\alpha n}\).
+\end{remarquebox}
+
+\begin{remarquebox}
+\textbf{Classification.}
+Cet exercice rel\`eve du th\`eme \textbf{Analyse}.
+\end{remarquebox}
+
+\end{document}

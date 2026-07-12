@@ -1,0 +1,47 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+
+\begin{document}
+
+\section*{Démonstration avec décomposition par $[n^\lambda]$}
+
+Posons $S_n=\sum_{j=1}^n j^{\alpha n}$. Le changement d'indice $k=n-j$ donne
+\[
+\frac{S_n}{n^{\alpha n}}=\sum_{k=0}^{n-1}\left(1-\frac{k}{n}\right)^{\alpha n}.
+\]
+
+\textbf{Choix de $\lambda$.} On pose $\lambda=\tfrac12$ et $N=[n^{1/2}]$. On décompose
+\[
+R_n=\sum_{k=1}^{n-1}\left|\left(1-\frac{k}{n}\right)^{\alpha n}-e^{-\alpha k}\right|
+= A_n+B_n,
+\]
+avec $A_n=\sum_{k=1}^{N}(\cdots)$ et $B_n=\sum_{k=N+1}^{n-1}(\cdots)$.
+
+\textbf{Lemme.} Pour $x\in[0,1)$, $\log(1-x)\le -x$. Pour $x\in[0,1/2]$,
+$0\le -\log(1-x)-x\le x^2$.
+
+\textbf{Étape 1 ($A_n$).} Pour $k\le N=[n^{1/2}]$, $k/n\to 0$, donc pour $n$ grand
+$k/n\le 1/2$ et le lemme donne
+\[
+0\le e^{-\alpha k}-\Big(1-\tfrac{k}{n}\Big)^{\alpha n}\le \frac{\alpha k^2}{n}e^{-\alpha k},
+\]
+d'où $A_n\le \dfrac{\alpha}{n}\sum_{k\ge1}k^2e^{-\alpha k}=O(1/n)\to0$.
+
+\textbf{Étape 2 ($B_n$).} Comme $\big(1-\tfrac kn\big)^{\alpha n}\le e^{-\alpha k}$,
+\[
+B_n\le \sum_{k=N+1}^\infty e^{-\alpha k}=\frac{e^{-\alpha(N+1)}}{1-e^{-\alpha}}\longrightarrow 0
+\quad\text{car } N=[n^{1/2}]\to\infty.
+\]
+
+\textbf{Conclusion.} $R_n\to0$, donc
+\[
+\frac{S_n}{n^{\alpha n}}\longrightarrow \sum_{k=0}^\infty e^{-\alpha k}=\frac{1}{1-e^{-\alpha}},
+\]
+soit
+\[
+\boxed{1^{\alpha n}+2^{\alpha n}+\cdots+n^{\alpha n}\sim\frac{n^{\alpha n}}{1-e^{-\alpha}}.}
+\]
+
+\end{document}

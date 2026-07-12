@@ -1,0 +1,491 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{geometry}
+\usepackage{microtype}
+
+\geometry{
+  top=2.3cm,
+  bottom=2.3cm,
+  left=2.4cm,
+  right=2.4cm
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+%------------------------------------------------
+% Couleurs
+%------------------------------------------------
+
+\definecolor{bleutheoreme}{RGB}{31,78,121}
+\definecolor{fondbleu}{RGB}{235,243,250}
+
+\definecolor{orangelemme}{RGB}{210,105,30}
+\definecolor{fondorange}{RGB}{255,244,230}
+
+\definecolor{vertpreuve}{RGB}{35,130,75}
+\definecolor{fondvert}{RGB}{235,248,239}
+
+\definecolor{violetremarque}{RGB}{112,48,160}
+\definecolor{fondviolet}{RGB}{246,238,252}
+
+\definecolor{rougeresultat}{RGB}{180,30,45}
+\definecolor{fondrouge}{RGB}{255,235,238}
+
+%------------------------------------------------
+% Environnements encadr\'es
+%------------------------------------------------
+
+\newmdenv[
+  linecolor=bleutheoreme,
+  backgroundcolor=fondbleu,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt
+]{theoremebox}
+
+\newmdenv[
+  linecolor=orangelemme,
+  backgroundcolor=fondorange,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt
+]{lemmebox}
+
+\newmdenv[
+  linecolor=vertpreuve,
+  backgroundcolor=fondvert,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt
+]{preuvebox}
+
+\newmdenv[
+  linecolor=violetremarque,
+  backgroundcolor=fondviolet,
+  linewidth=1.2pt,
+  roundcorner=4pt,
+  skipabove=10pt,
+  skipbelow=10pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt
+]{remarquebox}
+
+\newmdenv[
+  linecolor=rougeresultat,
+  backgroundcolor=fondrouge,
+  linewidth=1.5pt,
+  roundcorner=4pt,
+  skipabove=12pt,
+  skipbelow=12pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt
+]{resultatbox}
+
+%------------------------------------------------
+% Commandes math\'ematiques
+%------------------------------------------------
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\1}{\mathbf{1}}
+
+%------------------------------------------------
+% Document
+%------------------------------------------------
+
+\title{
+  \textbf{Somme de puissances \`a exposant croissant}\\
+  \large D\'emonstration par convergence domin\'ee
+}
+\author{R\'edaction rigoureuse pour Mostafa}
+\date{12 juillet 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{theoremebox}
+\textbf{\'Enonc\'e.}
+
+Soit \(\alpha>0\). D\'emontrer que, lorsque
+\(n\longrightarrow+\infty\),
+\[
+1^{\alpha n}+2^{\alpha n}+\cdots+n^{\alpha n}
+\sim
+\frac{n^{\alpha n}}{1-e^{-\alpha}}.
+\]
+\end{theoremebox}
+
+\begin{lemmebox}
+\textbf{Lemme de domination.}
+
+Pour tous entiers \(n\geq 1\) et \(k\in\N\), posons
+\[
+f_n(k)
+=
+\1_{\{0,\ldots,n-1\}}(k)
+\left(1-\frac{k}{n}\right)^{\alpha n}.
+\]
+Alors
+\[
+0\leq f_n(k)\leq e^{-\alpha k}.
+\]
+\end{lemmebox}
+
+\begin{preuvebox}
+\textbf{Preuve du lemme.}
+
+Soient \(n\geq1\) et \(k\in\N\).
+
+Si \(k\geq n\), alors
+\[
+f_n(k)=0,
+\]
+et l'in\'egalit\'e
+\[
+0\leq f_n(k)\leq e^{-\alpha k}
+\]
+est satisfaite.
+
+Supposons maintenant que \(0\leq k\leq n-1\). La fonction
+\[
+h:[0,1)\longrightarrow\R,
+\qquad
+h(x)=\log(1-x)+x,
+\]
+est d\'erivable et v\'erifie
+\[
+h'(x)
+=
+-\frac{1}{1-x}+1
+=
+-\frac{x}{1-x}
+\leq 0.
+\]
+Elle est donc d\'ecroissante sur \([0,1)\). Comme \(h(0)=0\),
+on obtient, pour tout \(x\in[0,1)\),
+\[
+\log(1-x)\leq -x.
+\]
+
+En appliquant cette in\'egalit\'e \`a \(x=k/n\), il vient
+\[
+\log\left(1-\frac{k}{n}\right)
+\leq
+-\frac{k}{n}.
+\]
+Puisque \(\alpha n>0\),
+\[
+\alpha n
+\log\left(1-\frac{k}{n}\right)
+\leq
+-\alpha k.
+\]
+La fonction exponentielle \'etant croissante sur \(\R\), on en
+d\'eduit
+\[
+\left(1-\frac{k}{n}\right)^{\alpha n}
+\leq e^{-\alpha k}.
+\]
+Dans le cas \(0\leq k\leq n-1\), le membre de gauche est
+positif. Par cons\'equent,
+\[
+0\leq f_n(k)\leq e^{-\alpha k}.
+\]
+\end{preuvebox}
+
+\begin{preuvebox}
+\textbf{Preuve principale par convergence domin\'ee.}
+
+Posons
+\[
+S_n=\sum_{j=1}^{n}j^{\alpha n}.
+\]
+Apr\`es division par \(n^{\alpha n}\), nous obtenons
+\[
+\frac{S_n}{n^{\alpha n}}
+=
+\sum_{j=1}^{n}
+\left(\frac{j}{n}\right)^{\alpha n}.
+\]
+
+Effectuons le changement d'indice
+\[
+k=n-j.
+\]
+Lorsque \(j\) parcourt \(\{1,\ldots,n\}\), l'entier \(k\)
+parcourt \(\{0,\ldots,n-1\}\). Il vient donc
+\[
+\frac{S_n}{n^{\alpha n}}
+=
+\sum_{k=0}^{n-1}
+\left(1-\frac{k}{n}\right)^{\alpha n}.
+\]
+
+Consid\'erons l'espace mesur\'e
+\[
+\bigl(\N,\mathcal{P}(\N),\mu\bigr),
+\]
+o\`u \(\mu\) d\'esigne la mesure de comptage. Pour toute fonction
+positive \(u:\N\to[0,+\infty]\), on a
+\[
+\int_{\N}u\,d\mu
+=
+\sum_{k=0}^{\infty}u(k).
+\]
+
+Pour \(n\geq1\), d\'efinissons
+\[
+f_n:\N\longrightarrow[0,+\infty)
+\]
+par
+\[
+f_n(k)
+=
+\begin{cases}
+\displaystyle
+\left(1-\frac{k}{n}\right)^{\alpha n},
+& 0\leq k\leq n-1,\\[1.2ex]
+0,
+& k\geq n.
+\end{cases}
+\]
+On a alors
+\[
+\frac{S_n}{n^{\alpha n}}
+=
+\sum_{k=0}^{\infty}f_n(k)
+=
+\int_{\N}f_n\,d\mu.
+\]
+
+Nous v\'erifions successivement la convergence simple et
+l'existence d'une fonction dominante int\'egrable.
+
+\medskip
+
+\textbf{1. Convergence simple.}
+
+Fixons \(k\in\N\).
+
+Si \(k=0\), alors, pour tout \(n\geq1\),
+\[
+f_n(0)=1.
+\]
+Par cons\'equent,
+\[
+\lim_{n\to\infty}f_n(0)=1=e^{-\alpha\cdot0}.
+\]
+
+Supposons \(k\geq1\). Pour tout \(n>k\), on a
+\[
+f_n(k)
+=
+\left(1-\frac{k}{n}\right)^{\alpha n}.
+\]
+En passant au logarithme,
+\[
+\log f_n(k)
+=
+\alpha n
+\log\left(1-\frac{k}{n}\right).
+\]
+Nous pouvons \'ecrire
+\[
+n\log\left(1-\frac{k}{n}\right)
+=
+-k\,
+\frac{
+  \log\left(1-\frac{k}{n}\right)
+}{
+  -\frac{k}{n}
+}.
+\]
+Or
+\[
+\frac{k}{n}\longrightarrow0
+\]
+et
+\[
+\lim_{x\to0}
+\frac{\log(1-x)}{-x}
+=
+1.
+\]
+Ainsi,
+\[
+n\log\left(1-\frac{k}{n}\right)
+\longrightarrow -k.
+\]
+Apr\`es multiplication par \(\alpha\),
+\[
+\log f_n(k)\longrightarrow-\alpha k.
+\]
+Par continuit\'e de la fonction exponentielle,
+\[
+f_n(k)\longrightarrow e^{-\alpha k}.
+\]
+
+Nous avons donc, pour tout \(k\in\N\),
+\[
+\lim_{n\to\infty}f_n(k)=e^{-\alpha k}.
+\]
+
+\medskip
+
+\textbf{2. Domination par une fonction int\'egrable.}
+
+D'apr\`es le lemme, pour tous \(n\geq1\) et \(k\in\N\),
+\[
+0\leq f_n(k)\leq e^{-\alpha k}.
+\]
+Posons
+\[
+g(k)=e^{-\alpha k}.
+\]
+La fonction \(g\) est int\'egrable pour la mesure de comptage si
+et seulement si la s\'erie
+\[
+\sum_{k=0}^{\infty}e^{-\alpha k}
+\]
+converge.
+
+Comme \(\alpha>0\), on a
+\[
+0<e^{-\alpha}<1.
+\]
+La s\'erie pr\'ec\'edente est donc une s\'erie g\'eom\'etrique
+convergente, de somme
+\[
+\sum_{k=0}^{\infty}e^{-\alpha k}
+=
+\frac{1}{1-e^{-\alpha}}.
+\]
+En particulier,
+\[
+\int_{\N}g\,d\mu
+=
+\frac{1}{1-e^{-\alpha}}
+<+\infty.
+\]
+
+\medskip
+
+\textbf{3. Application du th\'eor\`eme de convergence domin\'ee.}
+
+Les fonctions \(f_n\) sont mesurables, puisqu'elles sont
+d\'efinies sur \(\N\) muni de la tribu \(\mathcal{P}(\N)\).
+Elles convergent simplement vers la fonction
+\[
+f(k)=e^{-\alpha k},
+\]
+et elles satisfont
+\[
+|f_n(k)|\leq g(k)
+\]
+pour tous \(n\geq1\) et \(k\in\N\), avec \(g\in L^1(\mu)\).
+
+Le th\'eor\`eme de convergence domin\'ee donne donc
+\[
+\lim_{n\to\infty}\int_{\N}f_n\,d\mu
+=
+\int_{\N}
+\left(\lim_{n\to\infty}f_n\right)d\mu.
+\]
+Par cons\'equent,
+\[
+\begin{aligned}
+\lim_{n\to\infty}\frac{S_n}{n^{\alpha n}}
+&=
+\lim_{n\to\infty}
+\sum_{k=0}^{\infty}f_n(k)\\
+&=
+\sum_{k=0}^{\infty}e^{-\alpha k}\\
+&=
+\frac{1}{1-e^{-\alpha}}.
+\end{aligned}
+\]
+\end{preuvebox}
+
+\begin{resultatbox}
+\textbf{R\'esultat final.}
+
+Pour tout r\'eel \(\alpha>0\),
+\[
+\boxed{
+\lim_{n\to\infty}
+\frac{
+  1^{\alpha n}+2^{\alpha n}+\cdots+n^{\alpha n}
+}{
+  n^{\alpha n}
+}
+=
+\frac{1}{1-e^{-\alpha}}
+}.
+\]
+De mani\`ere \'equivalente,
+\[
+\boxed{
+1^{\alpha n}+2^{\alpha n}+\cdots+n^{\alpha n}
+\sim
+\frac{n^{\alpha n}}{1-e^{-\alpha}}
+}
+\qquad
+(n\longrightarrow+\infty).
+\]
+\end{resultatbox}
+
+\begin{remarquebox}
+\textbf{Remarque sur l'espace mesur\'e.}
+
+Le recours \`a la mesure de comptage permet d'appliquer le
+th\'eor\`eme de convergence domin\'ee sur un espace mesur\'e
+ind\'ependant de \(n\). L'extension
+\[
+f_n(k)=0
+\qquad\text{pour } k\geq n
+\]
+est n\'ecessaire pour que toutes les fonctions \(f_n\) soient
+d\'efinies sur le m\^eme ensemble \(\N\).
+\end{remarquebox}
+
+\begin{remarquebox}
+\textbf{Interpr\'etation asymptotique.}
+
+Apr\`es normalisation par \(n^{\alpha n}\), les termes situ\'es
+\`a une distance fix\'ee \(k\) de \(n\) v\'erifient
+\[
+\left(\frac{n-k}{n}\right)^{\alpha n}
+\longrightarrow e^{-\alpha k}.
+\]
+La constante finale est donc la somme de toutes ces
+contributions limites :
+\[
+1+e^{-\alpha}+e^{-2\alpha}+\cdots
+=
+\frac{1}{1-e^{-\alpha}}.
+\]
+\end{remarquebox}
+
+\begin{remarquebox}
+\textbf{Classification.}
+
+Cet exercice appartient au th\`eme \textbf{Analyse}.
+\end{remarquebox}
+
+\end{document}
