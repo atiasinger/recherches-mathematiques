@@ -1,0 +1,195 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[provide=*,french]{babel}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[most]{tcolorbox}
+\usepackage{geometry,hyperref}
+\usepackage[expansion=false]{microtype}
+\geometry{margin=2.5cm}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black}
+\newtcolorbox{theorembox}{breakable,colback=blue!3,colframe=blue!60!black,title=Théorème}
+\newtcolorbox{lemmabox}[1][]{breakable,colback=green!3,colframe=green!50!black,title=Lemme,#1}
+\newtcolorbox{proofbox}[1][]{breakable,colback=gray!2,colframe=gray!65!black,title=Démonstration,#1}
+\newtcolorbox{remarkbox}{breakable,colback=violet!3,colframe=violet!55!black,title=Remarque}
+\newtcolorbox{resultbox}{breakable,colback=red!2,colframe=red!60!black,title=Conclusion}
+\title{Jean Dieudonné -- Calcul infinitésimal\\
+\large Résolution rigoureuse de l'exercice 23, pages 118--119}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\section{Énoncé exactement transcrit}
+
+\begin{theorembox}
+Soit $h$ un entier supérieur ou égal à $1$. Montrer que, lorsque
+$n\to+\infty$, il existe deux constantes $a>0$ et $b>0$ telles que
+\[
+a n^{\frac{4h-1}{2h}}
+\leq
+S_n:=\sum_{k=1}^{n-1}
+\frac{\sin^2\!\left(\dfrac{\pi k^{2h}}{n}\right)}
+     {\sin^2\!\left(\dfrac{\pi k}{n}\right)}
+\leq
+b n^{\frac{4h-1}{2h}}.
+\]
+Les constantes peuvent dépendre de $h$, mais non de $n$.
+\end{theorembox}
+
+Posons
+\[
+K_n:=\left\lfloor\left(\frac n2\right)^{1/(2h)}\right\rfloor,
+\qquad \gamma:=\frac{4h-1}{2h}=2-\frac1{2h}.
+\]
+
+\section{Préliminaires}
+
+\begin{lemmabox}[title=Symétrie]
+Le terme de rang $n-k$ est égal au terme de rang $k$.
+\end{lemmabox}
+\begin{proofbox}
+On a
+\[
+\sin^2\left(\frac{\pi(n-k)}n\right)
+=\sin^2\left(\frac{\pi k}n\right).
+\]
+De plus $(n-k)^{2h}\equiv k^{2h}\pmod n$. Il existe donc $q\in\mathbb Z$
+tel que $(n-k)^{2h}=k^{2h}+qn$, d'où
+\[
+\sin^2\left(\frac{\pi(n-k)^{2h}}n\right)
+=\sin^2\left(\frac{\pi k^{2h}}n+q\pi\right)
+=\sin^2\left(\frac{\pi k^{2h}}n\right).
+\]
+\end{proofbox}
+
+\begin{lemmabox}[title=Deux inégalités trigonométriques]
+Pour $0\leq x\leq\pi/2$, on a
+\[
+\frac{2x}{\pi}\leq\sin x\leq x.
+\]
+Si $p\geq1$ et $0<\theta\leq\pi/(2p)$, alors
+\[
+\frac{|\sin(p\theta)|}{\sin\theta}\leq p.
+\]
+\end{lemmabox}
+\begin{proofbox}
+La première double inégalité résulte de la concavité de $\sin$ sur
+$[0,\pi/2]$ et de $\sin x\leq x$. Pour la seconde, la fonction
+$x\mapsto\sin x/x$ est décroissante sur $(0,\pi/2]$; comme
+$0<\theta\leq p\theta\leq\pi/2$, on obtient
+$\sin(p\theta)/(p\theta)\leq\sin\theta/\theta$.
+\end{proofbox}
+
+\section{Majoration}
+
+La symétrie donne, à un éventuel terme central près,
+\[
+S_n\leq2\sum_{1\leq k\leq n/2}
+\frac{\sin^2(\pi k^{2h}/n)}{\sin^2(\pi k/n)}.
+\]
+Nous découpons cette somme à $K_n$.
+
+\subsection{Petits indices : $1\leq k\leq K_n$}
+
+Prenons $\theta=\pi k/n$ et $p=k^{2h-1}$. Alors
+$p\theta=\pi k^{2h}/n\leq\pi/2$. Le lemme donne
+\[
+\frac{|\sin(\pi k^{2h}/n)|}{\sin(\pi k/n)}\leq k^{2h-1}.
+\]
+Par conséquent,
+\[
+\sum_{k=1}^{K_n}
+\frac{\sin^2(\pi k^{2h}/n)}{\sin^2(\pi k/n)}
+\leq\sum_{k=1}^{K_n}k^{4h-2}
+\leq C_hK_n^{4h-1}.
+\]
+Comme $K_n\asymp n^{1/(2h)}$,
+\[
+K_n^{4h-1}\asymp n^{(4h-1)/(2h)}=n^\gamma.
+\]
+
+\subsection{Grands indices : $K_n<k\leq n/2$}
+
+Sur cet intervalle, $\sin(\pi k/n)\geq2k/n$, tandis que le numérateur est
+au plus $1$. Ainsi
+\[
+\sum_{K_n<k\leq n/2}
+\frac{\sin^2(\pi k^{2h}/n)}{\sin^2(\pi k/n)}
+\leq\frac{n^2}{4}\sum_{k>K_n}\frac1{k^2}
+\leq\frac{n^2}{4K_n}.
+\]
+Or $n^2/K_n\asymp n^{2-1/(2h)}=n^\gamma$. Les deux zones réunies
+fournissent une constante $b_h>0$ telle que
+\[
+S_n\leq b_hn^\gamma
+\]
+pour tout $n$ assez grand.
+
+\section{Minoration}
+
+Nous isolons un bloc sur lequel le numérateur est uniformément séparé de zéro.
+Posons
+\[
+L_n:=\left\lceil\left(\frac n2\right)^{1/(2h)}\right\rceil,
+\qquad
+M_n:=\left\lfloor\left(\frac{3n}{4}\right)^{1/(2h)}\right\rfloor.
+\]
+Pour $L_n\leq k\leq M_n$, on a, à des erreurs tendant vers zéro dues aux
+parties entières,
+\[
+\frac12\leq\frac{k^{2h}}n\leq\frac34.
+\]
+Il existe donc $n_0(h)$ tel que, pour $n\geq n_0(h)$,
+\[
+\sin^2\left(\frac{\pi k^{2h}}n\right)\geq c_0,
+\]
+où l'on peut choisir une constante absolue $c_0>0$. D'autre part,
+$\sin(\pi k/n)\leq\pi k/n$. Par conséquent,
+\[
+S_n\geq\frac{c_0n^2}{\pi^2}
+\sum_{k=L_n}^{M_n}\frac1{k^2}.
+\]
+Le quotient $M_n/L_n$ tend vers $(3/2)^{1/(2h)}>1$. Il existe donc
+$\delta_h>0$ tel que $M_n-L_n\geq\delta_hL_n$ pour $n$ assez grand. Comme
+$k\leq M_n\leq C_hL_n$ sur ce bloc,
+\[
+\sum_{k=L_n}^{M_n}\frac1{k^2}
+\geq\frac{M_n-L_n+1}{M_n^2}
+\geq\frac{c_h}{L_n}.
+\]
+Ainsi
+\[
+S_n\geq c'_h\frac{n^2}{L_n}
+\geq a_hn^{2-1/(2h)}=a_hn^\gamma.
+\]
+
+\section{Conclusion}
+
+\begin{resultbox}
+Il existe deux constantes $a_h,b_h>0$ et un entier $n_0(h)$ tels que, pour
+tout $n\geq n_0(h)$,
+\[
+\boxed{
+a_h n^{\frac{4h-1}{2h}}
+\leq
+\sum_{k=1}^{n-1}
+\frac{\sin^2(\pi k^{2h}/n)}{\sin^2(\pi k/n)}
+\leq
+b_h n^{\frac{4h-1}{2h}}.}
+\]
+Autrement dit,
+\[
+S_n\asymp_h n^{(4h-1)/(2h)}.
+\]
+\end{resultbox}
+
+\begin{remarkbox}
+La coupure $K_n\asymp n^{1/(2h)}$ est naturelle : elle correspond à
+$k^{2h}/n\asymp1$. Avant cette échelle, l'inégalité
+$|\sin(p\theta)|\leq p\sin\theta$ contrôle le quotient; après cette échelle,
+la majoration du numérateur par $1$ et la sommation de $n^2/k^2$ prennent le
+relais. La même échelle fournit le bloc de minoration.
+\end{remarkbox}
+
+\end{document}
